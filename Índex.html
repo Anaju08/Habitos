@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hábitos Atômicos — Sistema de Aprendizado</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0E0E0E;
+    --paper: #F7F5F0;
+    --atom-blue: #1A3A5C;
+    --atom-teal: #0A7B6C;
+    --atom-amber: #D4870A;
+    --atom-red: #C0392B;
+    --atom-violet: #5B3A8A;
+    --glow: #3EC9A7;
+    --rule: rgba(14,14,14,0.12);
+    --card-bg: #FFFFFF;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--atom-teal), var(--glow));
+    z-index: 1000;
+    transition: width 0.1s linear;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(247,245,240,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+    z-index: 900;
+    padding: 0 2rem;
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    gap: 1rem;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+    color: var(--atom-blue);
+    white-space: nowrap;
+  }
+  .nav-links {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+  .nav-links a {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { background: var(--atom-teal); color: #fff; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: var(--atom-blue);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(62,201,167,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(62,201,167,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content {
+    position: relative;
+    text-align: center;
+    padding: 4rem 2rem;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--glow);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 span {
+    color: var(--glow);
+    display: block;
+  }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.72);
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+  .hero-author {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 40px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.8);
+  }
+  .hero-author .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--glow); }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat strong {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--glow);
+  }
+  .hero-stat span { font-size: 0.8rem; color: rgba(255,255,255,0.55); }
+
+  /* ── SECTIONS ── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--atom-teal);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--atom-blue);
+  }
+  .section-body {
+    font-size: 1.05rem;
+    color: #3a3a3a;
+    max-width: 760px;
+    line-height: 1.8;
+  }
+  .section-divider {
+    height: 1px;
+    background: var(--rule);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── EXECUTIVE SUMMARY ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 3rem;
+    border: 2px solid var(--atom-blue);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .summary-cell {
+    padding: 2rem 2.5rem;
+    background: var(--card-bg);
+  }
+  .summary-cell.dark { background: var(--atom-blue); color: #fff; }
+  .summary-cell.teal { background: var(--atom-teal); color: #fff; }
+  .summary-cell.full { grid-column: 1 / -1; }
+  .summary-cell h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .summary-cell p { font-size: 0.95rem; line-height: 1.75; }
+  .summary-cell.dark h3, .summary-cell.teal h3 { color: var(--glow); }
+  .summary-cell.dark p { color: rgba(255,255,255,0.8); }
+  .summary-cell.teal p { color: rgba(255,255,255,0.88); }
+
+  .transformation-box {
+    margin-top: 2rem;
+    background: linear-gradient(135deg, var(--atom-blue), #2a5c8a);
+    border-radius: 16px;
+    padding: 2.5rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .transformation-box::before {
+    content: '→';
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+  }
+  .transformation-box h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--glow);
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .transformation-box p { color: rgba(255,255,255,0.85); line-height: 1.8; font-size: 1rem; }
+
+  /* ── LEARNINGS ── */
+  .learnings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+  .learning-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 1.75rem;
+    border: 1px solid var(--rule);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .learning-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+  .learning-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--atom-teal);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+  }
+  .learning-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--atom-blue);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+  .learning-card p { font-size: 0.88rem; color: #555; line-height: 1.7; }
+  .learning-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.68rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    background: rgba(10,123,108,0.1);
+    color: var(--atom-teal);
+  }
+
+  /* ── 4 LAWS ── */
+  .laws-bg { background: var(--atom-blue); }
+  .laws-bg .section-label { color: var(--glow); }
+  .laws-bg .section-title { color: #fff; }
+  .laws-bg .section-body { color: rgba(255,255,255,0.7); }
+
+  .laws-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .law-card {
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .law-card::after {
+    content: attr(data-law);
+    position: absolute;
+    bottom: -1rem;
+    right: 1rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 5rem;
+    opacity: 0.06;
+    line-height: 1;
+  }
+  .law-card.l1 { background: rgba(62,201,167,0.12); border: 1px solid rgba(62,201,167,0.25); }
+  .law-card.l2 { background: rgba(212,135,10,0.12); border: 1px solid rgba(212,135,10,0.25); }
+  .law-card.l3 { background: rgba(91,58,138,0.12); border: 1px solid rgba(91,58,138,0.25); }
+  .law-card.l4 { background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.25); }
+
+  .law-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  .law-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .l1 .law-label { color: var(--glow); }
+  .l2 .law-label { color: var(--atom-amber); }
+  .l3 .law-label { color: #a87fdf; }
+  .l4 .law-label { color: #e76b5c; }
+
+  .law-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+  .law-card p { font-size: 0.9rem; color: rgba(255,255,255,0.72); line-height: 1.7; }
+
+  .law-tactics {
+    margin-top: 1.25rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .law-tactics li {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    padding-left: 1rem;
+    position: relative;
+  }
+  .law-tactics li::before {
+    content: '↗';
+    position: absolute;
+    left: 0;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .inverse-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+  .inverse-cell {
+    background: rgba(255,255,255,0.04);
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .inverse-cell .small { font-size: 0.7rem; color: rgba(255,255,255,0.4); font-family: 'DM Mono', monospace; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+  .inverse-cell strong { font-family: 'Syne', sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.85); display: block; }
+
+  /* ── TOOLS ── */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+  .tool-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 1.75rem;
+    border: 1px solid var(--rule);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .tool-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+  .tool-emoji { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .tool-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--atom-blue);
+    margin-bottom: 0.6rem;
+  }
+  .tool-card p { font-size: 0.88rem; color: #555; line-height: 1.7; }
+  .tool-formula {
+    margin-top: 1rem;
+    background: #F0FDF8;
+    border-left: 3px solid var(--atom-teal);
+    padding: 0.75rem 1rem;
+    border-radius: 0 8px 8px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--atom-teal);
+    line-height: 1.5;
+  }
+
+  /* ── IDENTITY ── */
+  .identity-bg { background: #FAFAF7; }
+
+  .identity-visual {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    align-items: center;
+    margin: 3rem 0;
+  }
+  .identity-block {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 2rem;
+    border: 1px solid var(--rule);
+    text-align: center;
+  }
+  .identity-block.outcome { border-color: rgba(192,57,43,0.3); }
+  .identity-block.identity-centered { border-color: rgba(10,123,108,0.4); background: #F0FDF8; }
+  .identity-block .type-label {
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.12em;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .identity-block h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: var(--atom-blue);
+  }
+  .identity-block p { font-size: 0.85rem; color: #666; line-height: 1.65; }
+  .identity-arrow {
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--atom-teal);
+  }
+
+  .votes-demo {
+    background: var(--atom-blue);
+    border-radius: 16px;
+    padding: 2.5rem;
+    color: #fff;
+    margin-top: 2rem;
+  }
+  .votes-demo h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--glow);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+  .votes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .vote-item {
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .vote-action {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 0.4rem;
+    font-family: 'DM Mono', monospace;
+  }
+  .vote-identity {
+    font-size: 0.9rem;
+    color: var(--glow);
+    font-weight: 600;
+  }
+
+  /* ── MENTAL MODELS ── */
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .model-card {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+  }
+  .model-header {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .model-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+  }
+  .model-body {
+    background: var(--card-bg);
+    padding: 1.5rem;
+  }
+  .model-body p { font-size: 0.88rem; color: #555; line-height: 1.7; }
+  .model-quote {
+    margin-top: 1rem;
+    border-left: 3px solid var(--rule);
+    padding-left: 1rem;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  /* ── IMPLEMENTATION ── */
+  .impl-bg { background: var(--atom-blue); }
+  .impl-bg .section-label { color: var(--glow); }
+  .impl-bg .section-title { color: #fff; }
+  .impl-bg .section-body { color: rgba(255,255,255,0.7); }
+
+  .week-plan {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .week-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+    background: rgba(255,255,255,0.03);
+    gap: 0;
+  }
+  .week-row.header {
+    background: rgba(255,255,255,0.08);
+  }
+  .week-cell {
+    padding: 1.1rem 1.5rem;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+  }
+  .week-cell:last-child { border-right: none; }
+  .week-cell.header-cell {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--glow);
+    font-weight: 500;
+  }
+  .week-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--glow);
+  }
+
+  .habit-stack {
+    margin-top: 2.5rem;
+    background: rgba(255,255,255,0.04);
+    border-radius: 14px;
+    padding: 2rem;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .habit-stack h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--glow);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .stack-chain {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .stack-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .stack-item:last-child { border-bottom: none; }
+  .stack-connector {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(62,201,167,0.15);
+    border: 1px solid rgba(62,201,167,0.3);
+    display: grid;
+    place-items: center;
+    font-size: 0.75rem;
+    color: var(--glow);
+    font-family: 'DM Mono', monospace;
+  }
+  .stack-text { font-size: 0.88rem; color: rgba(255,255,255,0.75); line-height: 1.5; }
+  .stack-text strong { color: var(--glow); font-size: 0.78rem; display: block; font-family: 'DM Mono', monospace; margin-bottom: 0.15rem; }
+
+  /* ── ADVANCED ── */
+  .advanced-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+  .advanced-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 2rem;
+    border: 1px solid var(--rule);
+  }
+  .advanced-card .icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .advanced-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--atom-blue);
+    margin-bottom: 0.75rem;
+  }
+  .advanced-card p { font-size: 0.88rem; color: #555; line-height: 1.7; }
+  .insight-box {
+    margin-top: 1.25rem;
+    background: #F0FDF8;
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    font-size: 0.82rem;
+    color: var(--atom-teal);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* ── INSIGHTS ── */
+  .insights-bg { background: #F0FDF8; }
+
+  .insights-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .insight-row {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--rule);
+  }
+  .insight-bullet {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--atom-teal);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+  .insight-text h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--atom-blue);
+    margin-bottom: 0.35rem;
+  }
+  .insight-text p { font-size: 0.88rem; color: #555; line-height: 1.65; }
+
+  /* ── CONCLUSION ── */
+  .conclusion-bg {
+    background: var(--ink);
+    color: #fff;
+    padding: 8rem 2rem;
+    text-align: center;
+  }
+  .conclusion-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .conclusion-bg .section-label { color: var(--glow); }
+  .conclusion-bg .section-title { color: #fff; margin-bottom: 1.5rem; }
+
+  .big-quote {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.3rem, 3.5vw, 2rem);
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.4;
+    margin: 2rem 0 3rem;
+  }
+  .big-quote em { color: var(--glow); font-style: normal; }
+
+  .conclusion-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 3rem;
+  }
+  .conclusion-cell {
+    background: rgba(255,255,255,0.04);
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  .conclusion-cell .num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    color: var(--glow);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .conclusion-cell p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── ACCORDION (for interactive learnings) ── */
+  .accordion-item {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card-bg);
+  }
+  .accordion-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    gap: 1rem;
+  }
+  .accordion-trigger:hover { background: rgba(10,123,108,0.03); }
+  .accordion-trigger .acc-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--atom-blue);
+    flex: 1;
+  }
+  .accordion-trigger .acc-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(10,123,108,0.1);
+    display: grid;
+    place-items: center;
+    color: var(--atom-teal);
+    font-size: 1rem;
+    transition: transform 0.2s;
+  }
+  .accordion-trigger[aria-expanded="true"] .acc-icon { transform: rotate(45deg); }
+  .accordion-body {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.75;
+  }
+  .accordion-body.open { display: block; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .summary-grid { grid-template-columns: 1fr; }
+    .laws-grid { grid-template-columns: 1fr; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .models-grid { grid-template-columns: 1fr; }
+    .advanced-grid { grid-template-columns: 1fr; }
+    .conclusion-grid { grid-template-columns: 1fr; }
+    .identity-visual { grid-template-columns: 1fr; }
+    .identity-arrow { transform: rotate(90deg); }
+    .votes-grid { grid-template-columns: 1fr; }
+    .inverse-grid { grid-template-columns: repeat(2, 1fr); }
+    .week-row { grid-template-columns: 60px 1fr; }
+    .week-row .week-cell:last-child { display: none; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">Hábitos Atômicos ⚛</span>
+    <ul class="nav-links">
+      <li><a href="#resumo">Resumo</a></li>
+      <li><a href="#aprendizados">20 Aprendizados</a></li>
+      <li><a href="#quatro-leis">4 Leis</a></li>
+      <li><a href="#ferramentas">Ferramentas</a></li>
+      <li><a href="#identidade">Identidade</a></li>
+      <li><a href="#implementacao">Implementação</a></li>
+      <li><a href="#avancado">Avançado</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Sistema de Aprendizado Acelerado</span>
+    <h1>Hábitos<span>Atômicos</span></h1>
+    <p class="hero-sub">Transforme o livro de James Clear em um sistema prático de implementação — não apenas leitura, mas uma arquitetura de vida.</p>
+    <div class="hero-author">
+      <div class="dot"></div>
+      James Clear · Editora Alta Books · 2019
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>1%</strong>
+        <span>de melhoria diária</span>
+      </div>
+      <div class="hero-stat">
+        <strong>37×</strong>
+        <span>melhor em 1 ano</span>
+      </div>
+      <div class="hero-stat">
+        <strong>4</strong>
+        <span>leis da mudança</span>
+      </div>
+      <div class="hero-stat">
+        <strong>∞</strong>
+        <span>efeito composto</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 1. RESUMO EXECUTIVO ── -->
+<section class="section" id="resumo">
+  <div class="section-label">Seção 01</div>
+  <h2 class="section-title">Resumo Executivo</h2>
+  <p class="section-body">Uma síntese densa do que o livro diz, o que o autor quer que você entenda, e qual transformação acontece quando os conceitos são aplicados.</p>
+
+  <div class="summary-grid">
+    <div class="summary-cell dark">
+      <h3>A Mensagem Central</h3>
+      <p>Você não sobe para atingir o nível de seus objetivos. Você desce ao nível de seus sistemas. James Clear argumenta que a mudança duradoura não vem de motivação, disciplina heroica ou metas ambiciosas — vem da construção de um sistema de pequenos hábitos que se acumulam exponencialmente ao longo do tempo, como juros compostos do autoaperfeiçoamento.</p>
+    </div>
+    <div class="summary-cell">
+      <h3>O Problema Real</h3>
+      <p>A maioria das pessoas falha em criar hábitos não por falta de vontade, mas por usar o sistema errado. Tentamos mudar resultados sem mudar a identidade e os processos que geram esses resultados. Focamos no "o quê" e no "como", quando deveríamos começar pelo "quem".</p>
+    </div>
+    <div class="summary-cell">
+      <h3>O Modelo de 4 Estágios</h3>
+      <p>Todo hábito passa por quatro estágios: <strong>Estímulo → Desejo → Resposta → Recompensa</strong>. Compreender esse ciclo permite projetar bons hábitos intencionalmente e desmantelar maus hábitos com precisão cirúrgica, usando as Quatro Leis da Mudança de Comportamento.</p>
+    </div>
+    <div class="summary-cell teal">
+      <h3>A Virada: Identidade, não Resultado</h3>
+      <p>A mudança mais profunda não é sobre o que você faz, mas sobre quem você acredita ser. Hábitos são votos para a sua identidade. Cada vez que você age, está provando para si mesmo o tipo de pessoa que é. O objetivo final é tornar-se alguém — não apenas alcançar algo.</p>
+    </div>
+    <div class="summary-cell full">
+      <h3>O Paradoxo dos 1%</h3>
+      <p>1% melhor por dia por um ano = 37,78× melhor. 1% pior por dia = quase zero. O problema é que pequenas melhorias são invisíveis no curto prazo — você cruza o "Vale da Desilusão" antes de ver resultados. O Platô do Potencial Latente guarda seu progresso silenciosamente até que você rompe o limite e o mundo chama de "sucesso da noite para o dia".</p>
+    </div>
+  </div>
+
+  <div class="transformation-box">
+    <h3>Transformação Esperada pelo Leitor</h3>
+    <p>Ao aplicar os conceitos de Hábitos Atômicos, você para de lutar contra sua falta de motivação e começa a <em>arquitetar</em> um ambiente e uma identidade que tornam os bons hábitos inevitáveis e os maus, impossíveis. A consequência: resultados que antes pareciam exigir força de vontade hercúlea passam a acontecer quase automaticamente — porque você mudou quem você é, não apenas o que você faz.</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── 2. OS 20 PRINCIPAIS APRENDIZADOS ── -->
+<section class="section" id="aprendizados">
+  <div class="section-label">Seção 02</div>
+  <h2 class="section-title">Os 20 Principais Aprendizados</h2>
+  <p class="section-body">As ideias mais importantes destiladas do livro — selecionadas por impacto prático e profundidade conceitual.</p>
+
+  <div class="learnings-grid">
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 01</div>
+      <h3>Hábitos são juros compostos do autoaperfeiçoamento</h3>
+      <p>Assim como o dinheiro se multiplica com juros compostos, o efeito dos hábitos se multiplica com a repetição. 1% melhor por dia leva a ser 37× melhor em um ano. O custo real dos maus hábitos e o valor real dos bons só se tornam visíveis depois de anos.</p>
+      <span class="learning-tag">Fundamentos</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 02</div>
+      <h3>Esqueça as metas. Foque nos sistemas</h3>
+      <p>Vencedores e perdedores têm as mesmas metas. O que diferencia é o sistema. Metas determinam direção; sistemas geram progresso. Além disso, metas restringem a felicidade ao colocá-la no futuro. Um sistema satisfaz no processo.</p>
+      <span class="learning-tag">Mentalidade</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 03</div>
+      <h3>O Platô do Potencial Latente</h3>
+      <p>Os hábitos parecem não funcionar até que você cruza um limiar crítico. O bambu cresce por 5 anos subterrâneo antes de emergir 27 metros em 6 semanas. Seu trabalho não foi perdido — estava sendo armazenado. A paciência é o ingrediente que a maioria abandona antes do resultado.</p>
+      <span class="learning-tag">Psicologia</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 04</div>
+      <h3>Identidade > Resultado: mude quem você é</h3>
+      <p>Há duas direções de mudança: baseada em resultado (quero emagrecer) e baseada em identidade (sou uma pessoa saudável). A segunda é radicalmente mais poderosa. "Não fumo" é mais eficaz que "estou tentando parar". Cada hábito é um voto para a pessoa que você deseja se tornar.</p>
+      <span class="learning-tag">Identidade</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 05</div>
+      <h3>O ciclo: Estímulo → Desejo → Resposta → Recompensa</h3>
+      <p>Todo comportamento humano segue esse ciclo neurológico. O estímulo aciona o desejo; o desejo motiva a resposta; a recompensa satisfaz e ensina. Se qualquer estágio falhar, o hábito não se forma. Compreender o ciclo permite projeta-lo intencionalmente.</p>
+      <span class="learning-tag">Neurociência</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 06</div>
+      <h3>1ª Lei: Torne-o Claro — visibilidade cria ação</h3>
+      <p>A maioria dos hábitos começa com um estímulo. Se o estímulo não for óbvio, o hábito não acontece. Deixar o violão na sala, colocar vitaminas ao lado do copo d'água, ou fazer uma lista de hábitos matinais são formas de tornar o visível inevitável.</p>
+      <span class="learning-tag">1ª Lei</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 07</div>
+      <h3>Intenção de implementação: quando + onde</h3>
+      <p>Pesquisas mostram que pessoas que definem hora e local específicos para um hábito têm taxa de sucesso muito maior. A fórmula: "Eu vou [COMPORTAMENTO] às [HORA] em [LOCAL]". 91% vs 35% de adesão nos estudos.</p>
+      <span class="learning-tag">1ª Lei</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 08</div>
+      <h3>Empilhamento de hábitos: encadeie o novo no antigo</h3>
+      <p>Use um hábito existente como âncora para um novo. Fórmula: "Depois de [HÁBITO ATUAL], eu vou [NOVO HÁBITO]". Isso aproveita a inércia comportamental e elimina o atrito de "quando começar". Pode-se criar cadeias inteiras de hábitos encadeados.</p>
+      <span class="learning-tag">1ª Lei</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 09</div>
+      <h3>O ambiente é mais poderoso do que a motivação</h3>
+      <p>Quando pesquisadores colocaram água ao lado de refrigerantes num hospital, as vendas de água subiram 25,8% sem ninguém dizer uma palavra. O ambiente é a mão invisível que molda o comportamento. Projete seu espaço para tornar as escolhas certas as mais óbvias.</p>
+      <span class="learning-tag">1ª Lei</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 10</div>
+      <h3>Autocontrole é uma estratégia de curto prazo</h3>
+      <p>Pessoas com alto autocontrole passam menos tempo em situações tentadoras, não mais. O segredo não é resistir à tentação — é remover os estímulos que a desencadeiam. Um hábito codificado não é esquecido: reduza a exposição para reduzir o comportamento.</p>
+      <span class="learning-tag">1ª Lei</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 11</div>
+      <h3>2ª Lei: Torne-o Atraente — o desejo precede a ação</h3>
+      <p>Os hábitos formados são associados a sentimentos antecipados de recompensa. Aumentar a atratividade de um hábito aumenta a chance de repeti-lo. Técnicas: juntar-se a um grupo onde o comportamento é norma, criar rituais de motivação, e empacotamento de tentações.</p>
+      <span class="learning-tag">2ª Lei</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 12</div>
+      <h3>3ª Lei: Torne-o Fácil — reduza o atrito</h3>
+      <p>Cada fricção adicional reduz a probabilidade de um hábito ocorrer. A Regra dos Dois Minutos diz: reduza o hábito a algo que dure no máximo dois minutos para estabelecer a ancoragem comportamental. "Correr" vira "colocar tênis de corrida". O começo é o hábito.</p>
+      <span class="learning-tag">3ª Lei</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 13</div>
+      <h3>4ª Lei: Torne-o Satisfatório — recompensa imediata</h3>
+      <p>O cérebro humano prioriza recompensas imediatas. O que é imediatamente recompensado é repetido; o que é imediatamente punido é evitado. Para criar hábitos cujos benefícios são tardios, você precisa adicionar uma satisfação imediata ao processo — mesmo que pequena.</p>
+      <span class="learning-tag">4ª Lei</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 14</div>
+      <h3>Rastreamento de hábitos: "Não quebre a corrente"</h3>
+      <p>Registrar visualmente hábitos (um X no calendário) cria prova visual do progresso, aumenta a motivação intrínseca e reforça a identidade. Jerry Seinfeld usava essa técnica para escrever piadas todos os dias. O mantra: "Não quebre a corrente."</p>
+      <span class="learning-tag">4ª Lei</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 15</div>
+      <h3>Nunca quebre um hábito duas vezes</h3>
+      <p>Falhar é inevitável. O que separa pessoas de sucesso das demais não é nunca falhar, mas recuperar-se rapidamente. O primeiro erro é um acidente. Dois erros consecutivos são o início de um novo (mau) hábito. Volte imediatamente — mesmo que seja uma versão menor do hábito.</p>
+      <span class="learning-tag">Resiliência</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 16</div>
+      <h3>A Regra de Cachinhos Dourados: dificuldade ideal</h3>
+      <p>A motivação máxima ocorre quando a tarefa está cerca de 4% além da sua capacidade atual. Muito fácil = tédio. Muito difícil = ansiedade. Na medida certa = fluxo. Isso explica por que Steve Martin passou 18 anos expandindo sua comédia um minuto por vez.</p>
+      <span class="learning-tag">Avançado</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 17</div>
+      <h3>O tédio é o maior inimigo do sucesso</h3>
+      <p>A maior ameaça ao progresso não é o fracasso — é o tédio. Quando um hábito se torna automático, perde o interesse. Profissionais cumprem o cronograma mesmo quando não estão motivados. Amadores desistem quando a vida atrapalha. A diferença está em amar o processo repetitivo.</p>
+      <span class="learning-tag">Avançado</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 18</div>
+      <h3>Hábitos + Prática Deliberada = Maestria</h3>
+      <p>Hábitos automatizam o básico e liberam energia cognitiva para o avançado. Mas hábitos sem reflexão criam complacência. A fórmula da excelência é automatizar o que pode ser automatizado, e então aplicar prática deliberada no próximo nível de dificuldade.</p>
+      <span class="learning-tag">Avançado</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 19</div>
+      <h3>Reflita e revise periodicamente</h3>
+      <p>Sem reflexão, entramos no piloto automático e paramos de melhorar. James Clear usa uma "Revisão Anual" (o que correu bem, mal, aprendi) e um "Relatório de Integridade" semestral (estou vivendo meus valores?). Pequenas paradas para calibrar compõem grandes trajetórias.</p>
+      <span class="learning-tag">Avançado</span>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-number">APRENDIZADO 20</div>
+      <h3>Mantenha sua identidade pequena e flexível</h3>
+      <p>Quanto mais rígida sua identidade, mais difícil é crescer. "Sou atleta" torna-se uma prisão quando a carreira acaba. A solução: defina identidades pelo caráter, não pelo papel. "Sou disciplinado e amo desafios" sobrevive a qualquer mudança de circunstância.</p>
+      <span class="learning-tag">Avançado</span>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── 3. AS 4 LEIS ── -->
+<section class="laws-bg" id="quatro-leis">
+  <div class="section" style="padding-top: 6rem; padding-bottom: 6rem;">
+    <div class="section-label">Seção 03</div>
+    <h2 class="section-title">As Quatro Leis da Mudança de Comportamento</h2>
+    <p class="section-body">O framework central do livro: um sistema de quatro alavancas para criar bons hábitos e desmantelar os maus.</p>
+
+    <div class="laws-grid">
+      <div class="law-card l1" data-law="1">
+        <div class="law-icon">👁</div>
+        <div class="law-label">1ª Lei · Estímulo</div>
+        <h3>Torne-o Claro</h3>
+        <p>Se você não consegue ver o estímulo, o hábito não começa. Visibilidade cria comportamento. Projete seu ambiente para que as pistas dos bons hábitos sejam impossíveis de ignorar.</p>
+        <ul class="law-tactics">
+          <li>Avaliação de hábitos: liste e classifique seus hábitos atuais</li>
+          <li>Intenção de implementação: defina hora + local exatos</li>
+          <li>Empilhamento de hábitos: ancore no hábito existente</li>
+          <li>Redesenhe o ambiente: estímulos visuais óbvios</li>
+        </ul>
+      </div>
+
+      <div class="law-card l2" data-law="2">
+        <div class="law-icon">🔥</div>
+        <div class="law-label">2ª Lei · Desejo</div>
+        <h3>Torne-o Atraente</h3>
+        <p>O desejo precede a ação. Quanto mais atraente parecer um comportamento, maior a probabilidade de criá-lo. Associe prazer ao processo, não apenas ao resultado.</p>
+        <ul class="law-tactics">
+          <li>Empacotamento de tentações: una o que quer ao que deve</li>
+          <li>Junte-se a grupos onde o hábito é a norma</li>
+          <li>Crie rituais de motivação antes do hábito difícil</li>
+          <li>Ressignifique: "preciso" → "tenho o privilégio de"</li>
+        </ul>
+      </div>
+
+      <div class="law-card l3" data-law="3">
+        <div class="law-icon">⚡</div>
+        <div class="law-label">3ª Lei · Resposta</div>
+        <h3>Torne-o Fácil</h3>
+        <p>A frequência cria automaticidade, não o tempo. Cada fricção adicionada é uma barreira ao hábito. Reduza o número de passos entre você e o comportamento desejado.</p>
+        <ul class="law-tactics">
+          <li>Regra dos 2 Minutos: comece com versão de 2 min</li>
+          <li>Prepare o ambiente com antecedência (roupas, materiais)</li>
+          <li>Automatize com tecnologia e compras únicas</li>
+          <li>Domine o momento decisivo: otimize escolhas críticas</li>
+        </ul>
+      </div>
+
+      <div class="law-card l4" data-law="4">
+        <div class="law-icon">✨</div>
+        <div class="law-label">4ª Lei · Recompensa</div>
+        <h3>Torne-o Satisfatório</h3>
+        <p>O que é imediatamente recompensado é repetido. O que é imediatamente punido é evitado. Adicione uma pequena vitória imediata ao final de qualquer hábito cujo benefício é tardio.</p>
+        <ul class="law-tactics">
+          <li>Use reforços imediatos após concluir o hábito</li>
+          <li>Rastreador de hábitos: não quebre a corrente</li>
+          <li>Nunca falte duas vezes seguidas</li>
+          <li>Parceiro de responsabilidade / contrato de hábitos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="inverse-grid">
+      <div class="inverse-cell">
+        <div class="small">Inversão · 1ª Lei</div>
+        <strong>Torne-o Invisível</strong>
+      </div>
+      <div class="inverse-cell">
+        <div class="small">Inversão · 2ª Lei</div>
+        <strong>Torne-o Desinteressante</strong>
+      </div>
+      <div class="inverse-cell">
+        <div class="small">Inversão · 3ª Lei</div>
+        <strong>Torne-o Difícil</strong>
+      </div>
+      <div class="inverse-cell">
+        <div class="small">Inversão · 4ª Lei</div>
+        <strong>Torne-o Insatisfatório</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. FERRAMENTAS PRÁTICAS ── -->
+<section class="section" id="ferramentas">
+  <div class="section-label">Seção 04</div>
+  <h2 class="section-title">Ferramentas Práticas do Livro</h2>
+  <p class="section-body">Técnicas específicas com fórmulas prontas para implementar imediatamente em sua rotina.</p>
+
+  <div class="tools-grid">
+
+    <div class="tool-card">
+      <span class="tool-emoji">🗓</span>
+      <h3>Avaliação de Hábitos</h3>
+      <p>Liste todos os seus hábitos diários. Para cada um, marque: + (bom), – (ruim), = (neutro). Isso torna o inconsciente consciente — condição necessária para mudar.</p>
+      <div class="tool-formula">Pergunta-chave: "Este hábito me ajuda a ser o tipo de pessoa que quero ser?"</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="tool-emoji">📍</span>
+      <h3>Intenção de Implementação</h3>
+      <p>Transforma intenções vagas em planos concretos. Pessoas que definem hora e local têm taxa de adesão 2× maior. Elimina a necessidade de decidir na hora.</p>
+      <div class="tool-formula">Eu vou [COMPORTAMENTO]<br>às [HORA]<br>em [LOCAL].</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="tool-emoji">🔗</span>
+      <h3>Empilhamento de Hábitos</h3>
+      <p>Usa a inércia comportamental a seu favor. Amarre o novo hábito a um existente como âncora. Pode-se criar cadeias inteiras de comportamentos encadeados.</p>
+      <div class="tool-formula">Depois de [HÁBITO ATUAL],<br>eu vou [NOVO HÁBITO].</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="tool-emoji">⏱</span>
+      <h3>Regra dos Dois Minutos</h3>
+      <p>Reduza qualquer hábito à sua versão de 2 minutos para eliminar o atrito de começar. O objetivo não é o hábito de 2 min, mas estabelecer a prática de aparecer.</p>
+      <div class="tool-formula">"Correr 5km" → "Colocar tênis"<br>"Ler 30 páginas" → "Abrir o livro"<br>"Meditar 20 min" → "Sentar e respirar"</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="tool-emoji">📊</span>
+      <h3>Rastreador de Hábitos</h3>
+      <p>Marque um X para cada dia que cumprir o hábito. Cria visibilidade, motivação pelo progresso, e prova da identidade que está construindo. "Não quebre a corrente."</p>
+      <div class="tool-formula">Fórmula combinada:<br>Depois de [HÁBITO ATUAL],<br>eu vou [RASTREAR MEU HÁBITO].</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="tool-emoji">🤝</span>
+      <h3>Contrato de Hábitos</h3>
+      <p>Acordo escrito com alguém sobre um hábito e a punição caso não seja cumprido. Adiciona custo social e imediato ao fracasso — tornando a inação imediatamente dolorosa.</p>
+      <div class="tool-formula">Se eu não fizer [HÁBITO],<br>a consequência será [PUNIÇÃO].<br>Assinado por: ___</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── 5. IDENTIDADE ── -->
+<section class="section identity-bg" id="identidade">
+  <div class="section-label">Seção 05</div>
+  <h2 class="section-title">A Mudança Baseada em Identidade</h2>
+  <p class="section-body">A descoberta mais importante do livro: a forma mais eficaz de mudar comportamentos é mudar a crença sobre quem você é — não o que você faz.</p>
+
+  <div class="identity-visual">
+    <div class="identity-block outcome">
+      <div class="type-label">Abordagem Comum</div>
+      <h3>Baseada em Resultado</h3>
+      <p>Começa pelo que você quer alcançar (emagrecer, publicar um livro, ganhar dinheiro). As metas guiam as ações. Funciona a curto prazo, mas a identidade antiga frequentemente sabota o progresso.</p>
+    </div>
+    <div class="identity-arrow">→</div>
+    <div class="identity-block identity-centered">
+      <div class="type-label">Abordagem do Livro</div>
+      <h3>Baseada em Identidade</h3>
+      <p>Começa por quem você quer se tornar. Cada hábito é um voto para essa identidade. Os resultados são consequência natural de ser esse tipo de pessoa — não o objetivo em si.</p>
+    </div>
+  </div>
+
+  <div class="votes-demo">
+    <h3>🗳 Cada ação é um voto para sua identidade</h3>
+    <div class="votes-grid">
+      <div class="vote-item">
+        <div class="vote-action">Você vai à academia hoje →</div>
+        <div class="vote-identity">"Sou alguém que cuida do corpo"</div>
+      </div>
+      <div class="vote-item">
+        <div class="vote-action">Você lê 10 páginas hoje →</div>
+        <div class="vote-identity">"Sou leitor"</div>
+      </div>
+      <div class="vote-item">
+        <div class="vote-action">Você escreve por 5 min hoje →</div>
+        <div class="vote-identity">"Sou escritor"</div>
+      </div>
+      <div class="vote-item">
+        <div class="vote-action">Você medita 1 min hoje →</div>
+        <div class="vote-identity">"Sou alguém que medita"</div>
+      </div>
+      <div class="vote-item">
+        <div class="vote-action">Você economiza R$10 hoje →</div>
+        <div class="vote-identity">"Sou alguém que investe"</div>
+      </div>
+      <div class="vote-item">
+        <div class="vote-action">Você recusa o cigarro hoje →</div>
+        <div class="vote-identity">"Não fumo"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── 6. MODELOS MENTAIS ── -->
+<section class="section">
+  <div class="section-label">Seção 06</div>
+  <h2 class="section-title">Modelos Mentais Essenciais</h2>
+  <p class="section-body">As metáforas e frameworks conceptuais que James Clear usa para tornar os princípios intuitivos e memoráveis.</p>
+
+  <div class="models-grid">
+
+    <div class="model-card">
+      <div class="model-header" style="background: var(--atom-blue);">
+        <span style="font-size:1.4rem">✈️</span>
+        <h3>A Analogia do Avião</h3>
+      </div>
+      <div class="model-body">
+        <p>Mudar um hábito por alguns graus parece insignificante — como ajustar a rota de um avião por 3,5°. Mas de Los Angeles até Nova York, esse ajuste mínimo te leva a Washington D.C. Pequenas mudanças de direção criam destinos radicalmente diferentes.</p>
+        <div class="model-quote">"Fazer uma escolha que seja 1% melhor parece insignificante, mas ao longo de uma vida inteira essas escolhas determinam a diferença entre quem você é e quem você poderia ser."</div>
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="model-header" style="background: var(--atom-teal);">
+        <span style="font-size:1.4rem">🧊</span>
+        <h3>O Cubo de Gelo</h3>
+      </div>
+      <div class="model-body">
+        <p>Imagine um cubo de gelo numa sala que vai aquecendo: 25°, 26°, 27°, 28°, 29°, 30°, 31°... nada acontece. A 32° o gelo começa a derreter. Seus hábitos funcionam assim: o esforço acumula silenciosamente antes de qualquer mudança visível.</p>
+        <div class="model-quote">"Reclamar de não alcançar o sucesso é como reclamar que um cubo de gelo não está derretendo quando você o aquece de 25 a 31 graus. O trabalho não foi desperdiçado; está sendo armazenado."</div>
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="model-header" style="background: var(--atom-violet);">
+        <span style="font-size:1.4rem">🏆</span>
+        <h3>Sistemas vs. Metas</h3>
+      </div>
+      <div class="model-body">
+        <p>Times perdedores e ganhadores têm as mesmas metas. Dave Brailsford não tinha uma meta diferente dos outros treinadores — tinha um sistema diferente: agregar ganhos marginais de 1% em tudo. Os britânicos passaram de zero a 60% das medalhas olímpicas.</p>
+        <div class="model-quote">"Você não sobe para atingir o nível de seus objetivos. Desce ao nível de seus sistemas."</div>
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="model-header" style="background: var(--atom-amber);">
+        <span style="font-size:1.4rem">🗳</span>
+        <h3>Hábitos como Votos</h3>
+      </div>
+      <div class="model-body">
+        <p>Cada ação que você toma é um voto para o tipo de pessoa que você quer se tornar. Não precisa de unanimidade — precisa de maioria. Você pode ter votos para maus hábitos e ainda assim vencer se tiver votos suficientes para a boa identidade.</p>
+        <div class="model-quote">"Toda vez que você escreve uma página, você é escritor. Toda vez que pratica violino, você é músico. Toda vez que começa um treino, você é atleta."</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── 7. PLANO DE IMPLEMENTAÇÃO ── -->
+<section class="impl-bg" id="implementacao">
+  <div class="section" style="padding-top: 6rem; padding-bottom: 6rem;">
+    <div class="section-label">Seção 07</div>
+    <h2 class="section-title">Plano de Implementação de 4 Semanas</h2>
+    <p class="section-body">Um roteiro prático para aplicar o sistema do livro em sua vida, semana por semana.</p>
+
+    <div class="week-plan">
+      <div class="week-row header">
+        <div class="week-cell header-cell">Semana</div>
+        <div class="week-cell header-cell">Foco Principal</div>
+        <div class="week-cell header-cell">Ação Concreta</div>
+      </div>
+      <div class="week-row">
+        <div class="week-cell"><span class="week-num">01</span></div>
+        <div class="week-cell"><strong style="color:#fff; display:block; margin-bottom:.3rem">Consciência</strong>Faça a Avaliação de Hábitos completa. Mapeie o que você já faz no piloto automático — bom, ruim e neutro.</div>
+        <div class="week-cell" style="color:rgba(255,255,255,.6)">Liste 20+ hábitos diários. Classifique cada um. Identifique os 3 maus hábitos mais custosos e os 3 bons hábitos que quer construir.</div>
+      </div>
+      <div class="week-row">
+        <div class="week-cell"><span class="week-num">02</span></div>
+        <div class="week-cell"><strong style="color:#fff; display:block; margin-bottom:.3rem">Clareza e Ancoragem</strong>Aplique intenção de implementação e empilhamento de hábitos para os 3 novos hábitos escolhidos.</div>
+        <div class="week-cell" style="color:rgba(255,255,255,.6)">Escreva a fórmula "Eu vou [X] às [HORA] em [LOCAL]" para cada hábito. Identifique o hábito âncora para cada novo comportamento.</div>
+      </div>
+      <div class="week-row">
+        <div class="week-cell"><span class="week-num">03</span></div>
+        <div class="week-cell"><strong style="color:#fff; display:block; margin-bottom:.3rem">Ambiente e Atrito</strong>Redesenhe seu espaço físico para tornar os bons hábitos óbvios e os maus, invisíveis.</div>
+        <div class="week-cell" style="color:rgba(255,255,255,.6)">Remova um estímulo de mau hábito do ambiente. Adicione um estímulo visual para cada bom hábito. Prepare materiais com antecedência.</div>
+      </div>
+      <div class="week-row">
+        <div class="week-cell"><span class="week-num">04</span></div>
+        <div class="week-cell"><strong style="color:#fff; display:block; margin-bottom:.3rem">Rastreamento e Satisfação</strong>Implemente um rastreador visual e adicione recompensas imediatas para hábitos difíceis.</div>
+        <div class="week-cell" style="color:rgba(255,255,255,.6)">Crie um calendário de hábitos. Marque um X por dia. Defina uma recompensa imediata para cada hábito completado. Nunca quebre a corrente duas vezes.</div>
+      </div>
+    </div>
+
+    <div class="habit-stack">
+      <h3>🔗 Exemplo de Cadeia de Hábitos — Rotina Matinal</h3>
+      <div class="stack-chain">
+        <div class="stack-item">
+          <div class="stack-connector">→</div>
+          <div class="stack-text"><strong>Hábito âncora</strong>Despertar e apagar o alarme</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-connector">+1</div>
+          <div class="stack-text"><strong>Depois de apagar o alarme →</strong>Beber um copo d'água (já preparado na mesa de cabeceira)</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-connector">+2</div>
+          <div class="stack-text"><strong>Depois de beber água →</strong>Meditar por 2 minutos (app já aberto)</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-connector">+3</div>
+          <div class="stack-text"><strong>Depois de meditar →</strong>Escrever 3 gratidões no caderno (já sobre a mesa)</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-connector">+4</div>
+          <div class="stack-text"><strong>Depois de escrever →</strong>Registrar no rastreador de hábitos (X no calendário)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 8. TÓPICOS AVANÇADOS ── -->
+<section class="section" id="avancado">
+  <div class="section-label">Seção 08</div>
+  <h2 class="section-title">Tópicos Avançados</h2>
+  <p class="section-body">Para quem quer ir além do básico: genes, motivação sustentável, maestria e o lado sombrio dos hábitos.</p>
+
+  <div class="advanced-grid">
+
+    <div class="advanced-card">
+      <span class="icon">🧬</span>
+      <h3>Genes e o Jogo Certo</h3>
+      <p>Genes não determinam seu destino — determinam suas áreas de oportunidade. O segredo é encontrar o jogo em que suas probabilidades são maiores. Michael Phelps e El Guerrouj têm o mesmo comprimento de perna, mas corpos opostos para natação e corrida.</p>
+      <div class="insight-box">"Se não conseguir encontrar um jogo onde as probabilidades estejam a seu favor, crie um." — Scott Adams (criador do Dilbert)</div>
+    </div>
+
+    <div class="advanced-card">
+      <span class="icon">🌡</span>
+      <h3>A Regra de Cachinhos Dourados</h3>
+      <p>Motivação máxima ocorre quando a tarefa está cerca de 4% além da sua capacidade atual. Muito fácil = tédio. Muito difícil = ansiedade. Steve Martin expandiu seu show 1-2 minutos por vez ao longo de 18 anos — sempre no limite ideal.</p>
+      <div class="insight-box">"A maior ameaça ao sucesso não é o fracasso — é o tédio."</div>
+    </div>
+
+    <div class="advanced-card">
+      <span class="icon">⚗️</span>
+      <h3>Hábitos + Prática Deliberada</h3>
+      <p>Hábitos automatizam o básico, mas criar complacência. Maestria requer um ciclo: automatize uma habilidade → use energia liberada para dominar a próxima fronteira → repita. Os Lakers de Pat Riley usaram isso para vencer consecutivamente.</p>
+      <div class="insight-box">Hábitos + Prática Deliberada = Maestria</div>
+    </div>
+
+    <div class="advanced-card">
+      <span class="icon">🔄</span>
+      <h3>Reflexão e Revisão Anual</h3>
+      <p>James Clear faz uma Revisão Anual em dezembro (o que correu bem/mal/aprendi) e um Relatório de Integridade em junho (estou vivendo meus valores?). Sem reflexão, você reforça inconscientemente a mediocridade.</p>
+      <div class="insight-box">Perguntas: O que correu bem? O que não correu? O que aprendi?</div>
+    </div>
+
+    <div class="advanced-card">
+      <span class="icon">🪨</span>
+      <h3>O Paradoxo da Identidade Rígida</h3>
+      <p>Quanto mais você se apega a uma identidade, mais difícil crescer além dela. Veteranos, ex-CEOs e ex-atletas frequentemente sofrem crises de identidade. Solução: defina-se pelo caráter, não pelo papel. "Sou disciplinado" sobrevive a "não sou mais atleta".</p>
+      <div class="insight-box">"Mantenha sua identidade pequena." — Paul Graham</div>
+    </div>
+
+    <div class="advanced-card">
+      <span class="icon">💰</span>
+      <h3>A Lei de Goodhart</h3>
+      <p>Quando uma medida se torna o alvo, ela deixa de ser boa. Rastrear 10.000 passos pode levar a otimizar para o número, não para a saúde. Rastrear lucro trimestral pode destruir o longo prazo. Meça com sabedoria — os números são guias, não objetivos.</p>
+      <div class="insight-box">"Só porque você consegue medir algo não significa que seja o mais importante."</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── 9. INSIGHTS ACIONÁVEIS ── -->
+<section class="section insights-bg">
+  <div class="section-label">Seção 09</div>
+  <h2 class="section-title">Insights Acionáveis — Aplique Hoje</h2>
+  <p class="section-body">As perguntas e exercícios que você pode usar agora, sem precisar terminar de ler o livro.</p>
+
+  <div class="insights-list">
+    <div class="insight-row">
+      <div class="insight-bullet">01</div>
+      <div class="insight-text">
+        <h4>Escolha um hábito e escreva a fórmula completa</h4>
+        <p>Pegue um hábito que você quer criar. Escreva: "Depois de [hábito âncora], eu vou [novo hábito] às [hora] em [local]." Cole onde você vai ver. Essa especificidade duplica a probabilidade de sucesso.</p>
+      </div>
+    </div>
+    <div class="insight-row">
+      <div class="insight-bullet">02</div>
+      <div class="insight-text">
+        <h4>Faça uma caminhada pelo seu ambiente</h4>
+        <p>Olhe para os cômodos que você usa com olhos de designer: o que esses espaços estão tornando fácil? O que estão tornando difícil? Reorganize pelo menos uma coisa para tornar um bom hábito mais óbvio.</p>
+      </div>
+    </div>
+    <div class="insight-row">
+      <div class="insight-bullet">03</div>
+      <div class="insight-text">
+        <h4>Defina sua identidade em uma frase</h4>
+        <p>Pergunte: "Quem eu quero ser?" Escreva em termos de caráter, não resultado: "Sou alguém que é consistente com sua saúde." Agora, toda vez que hesitar, pergunte: "O que uma pessoa assim faria agora?"</p>
+      </div>
+    </div>
+    <div class="insight-row">
+      <div class="insight-bullet">04</div>
+      <div class="insight-text">
+        <h4>Imprima um calendário e comece a corrente hoje</h4>
+        <p>Escolha um único hábito. Marque um X no calendário após cada dia cumprido. O objetivo não é a perfeição — é não quebrar a corrente duas vezes. Quando falhar, volte no dia seguinte.</p>
+      </div>
+    </div>
+    <div class="insight-row">
+      <div class="insight-bullet">05</div>
+      <div class="insight-text">
+        <h4>Identifique o "momento decisivo" do seu dia</h4>
+        <p>Qual escolha do seu dia cria uma cascata de comportamentos positivos ou negativos? (Ex: acordar cedo → exercício → boa alimentação.) Otimize esse momento pivô — ele vale 10× mais que qualquer outro hábito isolado.</p>
+      </div>
+    </div>
+    <div class="insight-row">
+      <div class="insight-bullet">06</div>
+      <div class="insight-text">
+        <h4>Remova um estímulo de mau hábito esta semana</h4>
+        <p>Identifique o mau hábito mais custoso. Rastreie o estímulo que o dispara. Remova-o do ambiente. Lembre: você não precisa de força de vontade para resistir ao que você não vê.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONCLUSÃO ── -->
+<section class="conclusion-bg" id="conclusao">
+  <div class="conclusion-inner">
+    <div class="section-label" style="display:block; margin-bottom:.75rem;">Conclusão</div>
+    <h2 class="section-title" style="font-size: clamp(2rem, 5vw, 3.5rem); max-width:none;">O Segredo dos Resultados Duradouros</h2>
+
+    <div class="big-quote">
+      "O sucesso não é uma meta a ser alcançada nem uma linha de chegada a ser cruzada.
+      É um sistema para a melhoria, <em>um processo infinito para se aperfeiçoar.</em>"
+    </div>
+
+    <p style="color: rgba(255,255,255,0.65); font-size: 1rem; line-height: 1.8; margin-bottom: 2rem;">
+      Hábitos atômicos não se somam. Eles se multiplicam. O santo graal da mudança não é uma melhoria de 1%, mas mil delas — cada uma sendo uma unidade fundamental de um sistema maior. Comece pequeno. Seja consistente. Confie no processo composto. O tempo é seu maior aliado quando os hábitos trabalham a seu favor.
+    </p>
+
+    <div class="conclusion-grid">
+      <div class="conclusion-cell">
+        <div class="num">1%</div>
+        <p>Melhoria diária é suficiente para transformação completa em um ano</p>
+      </div>
+      <div class="conclusion-cell">
+        <div class="num">4</div>
+        <p>Leis universais que se aplicam a qualquer hábito em qualquer área da vida</p>
+      </div>
+      <div class="conclusion-cell">
+        <div class="num">∞</div>
+        <p>O processo nunca termina. Sempre há o próximo 1% a conquistar</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  Hábitos Atômicos · James Clear · Sistema de Aprendizado Acelerado · Criado para implementação, não apenas leitura
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+
+  // Accordion (for potential use)
+  document.querySelectorAll('.accordion-trigger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !expanded);
+      btn.nextElementSibling.classList.toggle('open');
+    });
+  });
+
+  // Smooth fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.learning-card, .tool-card, .model-card, .advanced-card, .insight-row, .law-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
